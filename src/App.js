@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./App.css";
 
 const questions = [
   {
@@ -167,25 +168,27 @@ function App() {
   };
 
   const getResult = () => {
-    const key = answers.join(""); // 例: [0,1,2] → "012"
-    const type = answerMap[key] || "A"; // 該当なしならデフォルトでA
+    const key = answers.join("");
+    const type = answerMap[key] || "A";
     return players[type];
   };
 
   if (step < questions.length) {
     const q = questions[step];
     return (
-      <div className="p-4 text-center">
-        <h2 className="text-xl mb-4">{q.question}</h2>
-        {q.options.map((opt, i) => (
-          <button
-            key={i}
-            onClick={() => handleAnswer(i)}
-            className="block mx-auto my-2 px-4 py-2 bg-red-600 text-white rounded"
-          >
-            {opt}
-          </button>
-        ))}
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-yellow-100 to-pink-200 p-6">
+        <div className="bg-white shadow-2xl rounded-3xl p-8 w-full max-w-md text-center border-4 border-red-300">
+          <h2 className="text-2xl font-bold mb-6 text-red-600">{q.question}</h2>
+          {q.options.map((opt, i) => (
+            <button
+              key={i}
+              onClick={() => handleAnswer(i)}
+              className="w-full my-2 py-3 px-6 rounded-full bg-red-500 text-white text-lg font-semibold transition duration-300 hover:bg-red-600 hover:scale-105"
+            >
+              {opt}
+            </button>
+          ))}
+        </div>
       </div>
     );
   }
@@ -193,11 +196,22 @@ function App() {
   const result = getResult();
 
   return (
-    <div className="p-4 text-center">
-      <h2 className="text-2xl font-bold mb-2">あなたの推しは…</h2>
-      <img src={result.image} alt={result.name} className="w-48 mx-auto mb-4" />
-      <h3 className="text-xl font-semibold">{result.name}</h3>
-      <p className="mt-2">{result.description}</p>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-100 to-purple-200 p-6">
+      <div className="bg-white shadow-2xl rounded-3xl p-8 w-full max-w-md text-center border-4 border-purple-400">
+        <h2 className="text-3xl font-extrabold text-purple-700 mb-4">🎉 あなたの推しは… 🎉</h2>
+        <img src={result.image} alt={result.name} className="w-48 h-48 object-cover rounded-full mx-auto mb-4 border-4 border-purple-300" />
+        <h3 className="text-2xl font-bold text-gray-800">{result.name}</h3>
+        <p className="text-md mt-3 text-gray-600">{result.description}</p>
+        <button
+          onClick={() => {
+            setStep(0);
+            setAnswers([]);
+          }}
+          className="mt-6 px-6 py-2 bg-purple-500 text-white rounded-full hover:bg-purple-600 transition"
+        >
+          もう一度診断する
+        </button>
+      </div>
     </div>
   );
 }
